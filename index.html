@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="fr">
+<!--
+  ============================================================
+  LSF Generator - Langue des Signes Française
+  Réalisé par IntA11Y - Solutions
+  ============================================================
+  
+  STRUCTURE HTML SÉMANTIQUE :
+  - <header>   : En-tête de la page (logo, titre principal)
+  - <nav>      : Barre d'accessibilité (outils d'adaptation)
+  - <main>     : Contenu principal (formulaire + résultats)
+  - <aside>    : Historique des recherches
+  - <footer>   : Pied de page
+  
+  ACCESSIBILITÉ (RGAA) :
+  - lang="fr"        : Langue définie pour les lecteurs d'écran
+  - role="..."       : Rôles ARIA explicites
+  - aria-label="..." : Étiquettes pour les technologies d'assistance
+  - aria-live="..."  : Zones de mise à jour dynamique annoncées
+  - tabindex         : Gestion de l'ordre de tabulation
+-->
+<head>
+  <meta charset="UTF-8" />
+  <!-- viewport : essentiel pour le responsive mobile -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Application de génération de signes en Langue des Signes Française (LSF). Accessible, conforme RGAA." />
+  <meta name="theme-color" content="#1a1a2e" />
+  
+  <title>LSF Generator — Langue des Signes Française | IntA11Y</title>
+
+  <!-- Lien vers la feuille de style principale -->
+  <link rel="stylesheet" href="css/style.css" />
+
+  <!-- Police OpenDyslexic chargée conditionnellement via JS,
+       mais on la déclare ici pour qu'elle soit disponible -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600;700&family=Lexend+Deca:wght@400;700&display=swap" rel="stylesheet" />
+  
+  <!-- OpenDyslexic depuis un CDN public -->
+  <link rel="stylesheet" href="https://fonts.cdnfonts.com/css/opendyslexic" />
+</head>
+
+<body>
+
+  <!-- ============================================================
+       SKIP LINK - Lien de saut vers le contenu principal
+       Essentiel pour les utilisateurs clavier / lecteurs d'écran
+       Il apparaît uniquement lors de la navigation au clavier
+  ============================================================ -->
+  <a href="#main-content" class="skip-link">Aller au contenu principal</a>
+
+  <!-- ============================================================
+       HEADER — En-tête principal
+  ============================================================ -->
+  <header class="site-header" role="banner">
+    <div class="container header-inner">
+      <!-- Logo / Identité de l'application -->
+      <div class="logo" aria-label="LSF Generator, application de langue des signes française">
+        <!-- Icône SVG inline : pas d'image externe à charger, accessible via aria-hidden -->
+        <svg aria-hidden="true" focusable="false" width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect width="40" height="40" rx="10" fill="var(--color-accent)"/>
+          <text x="8" y="28" font-size="22" fill="white">🤟</text>
+        </svg>
+        <span class="logo-text">LSF <strong>Generator</strong></span>
+      </div>
+
+      <!-- Indication de langue courante pour lecteur d'écran -->
+      <p class="sr-only" aria-live="polite" id="lang-announcement"></p>
+    </div>
+  </header>
+
+  <!-- ============================================================
+       NAV ACCESSIBILITÉ — Barre d'outils d'adaptation
+       role="navigation" + aria-label pour différencier des autres <nav>
+  ============================================================ -->
+  <nav class="a11y-toolbar" role="navigation" aria-label="Options d'accessibilité">
+    <div class="container">
+      <span class="toolbar-label" id="toolbar-title">Accessibilité :</span>
+
+      <div class="toolbar-controls" role="group" aria-labelledby="toolbar-title">
+
+        <!-- Bouton Police Dyslexie -->
+        <button
+          type="button"
+          id="btn-dyslexia"
+          class="a11y-btn"
+          aria-pressed="false"
+          aria-label="Activer la police pour dyslexie (OpenDyslexic)"
+          title="Police dyslexie"
+        >
+          <span aria-hidden="true">Aa</span>
+          <span class="btn-label">Dyslexie</span>
+        </button>
+
+        <!-- Groupe : Taille du texte -->
+        <div class="btn-group" role="group" aria-label="Taille du texte">
+          <button
+            type="button"
+            id="btn-text-decrease"
+            class="a11y-btn"
+            aria-label="Réduire la taille du texte"
+            title="Texte plus petit"
+          >
+            <span aria-hidden="true">A-</span>
+          </button>
+          <button
+            type="button"
+            id="btn-text-reset"
+            class="a11y-btn"
+            aria-label="Réinitialiser la taille du texte"
+            title="Taille normale"
+          >
+            <span aria-hidden="true">A</span>
+          </button>
+          <button
+            type="button"
+            id="btn-text-increase"
+            class="a11y-btn"
+            aria-label="Agrandir la taille du texte"
+            title="Texte plus grand"
+          >
+            <span aria-hidden="true">A+</span>
+          </button>
+        </div>
+
+        <!-- Bouton Mode Daltonien -->
+        <button
+          type="button"
+          id="btn-colorblind"
+          class="a11y-btn"
+          aria-pressed="false"
+          aria-label="Activer le mode daltonien (adaptation des couleurs)"
+          title="Mode daltonien"
+        >
+          <span aria-hidden="true">◑</span>
+          <span class="btn-label">Daltonien</span>
+        </button>
+
+        <!-- Bouton Mode Noir & Blanc -->
+        <button
+          type="button"
+          id="btn-grayscale"
+          class="a11y-btn"
+          aria-pressed="false"
+          aria-label="Activer le mode noir et blanc"
+          title="Noir et blanc"
+        >
+          <span aria-hidden="true">⬛</span>
+          <span class="btn-label">N&amp;B</span>
+        </button>
+
+        <!-- Bouton Mode Sombre -->
+        <button
+          type="button"
+          id="btn-dark"
+          class="a11y-btn"
+          aria-pressed="false"
+          aria-label="Activer le mode sombre"
+          title="Mode sombre"
+        >
+          <span aria-hidden="true">🌙</span>
+          <span class="btn-label">Sombre</span>
+        </button>
+
+        <!-- Bouton Mode Lecture Simplifiée -->
+        <button
+          type="button"
+          id="btn-simple"
+          class="a11y-btn"
+          aria-pressed="false"
+          aria-label="Activer le mode lecture simplifiée"
+          title="Lecture simplifiée"
+        >
+          <span aria-hidden="true">📖</span>
+          <span class="btn-label">Simplifié</span>
+        </button>
+
+      </div><!-- .toolbar-controls -->
+    </div><!-- .container -->
+  </nav>
+
+  <!-- ============================================================
+       MAIN — Contenu principal
+       id="main-content" : cible du skip-link
+  ============================================================ -->
+  <main id="main-content" class="main-content" role="main">
+    <div class="container">
+
+      <!-- Titre de section visible et sémantique -->
+      <section class="hero-section" aria-labelledby="hero-title">
+        <h1 id="hero-title" class="hero-title">
+          Traduire en <span class="accent-text">Langue des Signes</span> Française
+        </h1>
+        <p class="hero-subtitle">
+          Entrez un mot ou une phrase ci-dessous pour obtenir sa représentation en LSF sous forme de vidéos ou d'illustrations.
+        </p>
+      </section>
+
+      <!-- ======================================================
+           FORMULAIRE DE SAISIE LSF
+           <form> sémantique avec méthode POST (pas d'envoi serveur ici,
+           preventDefault() en JS) mais bonne pratique HTML
+      ====================================================== -->
+      <section class="input-section" aria-labelledby="form-title">
+        <h2 id="form-title" class="section-title">Saisir votre texte</h2>
+
+        <form
+          id="lsf-form"
+          class="lsf-form"
+          novalidate
+          aria-describedby="form-hint"
+          role="search"
+          aria-label="Recherche de signes LSF"
+        >
+          <!-- Indication d'aide contextuelle -->
+          <p id="form-hint" class="form-hint">
+            Entrez un ou plusieurs mots en français. La génération est possible mot par mot ou pour la phrase complète.
+          </p>
+
+          <!-- Champ de saisie texte -->
+          <div class="field-wrapper">
+            <label for="lsf-input" class="field-label">
+              Texte à traduire en LSF
+              <span class="required-indicator" aria-hidden="true">*</span>
+              <span class="sr-only">(champ obligatoire)</span>
+            </label>
+            <div class="input-row">
+              <input
+                type="text"
+                id="lsf-input"
+                name="lsf-input"
+                class="lsf-input"
+                placeholder="Ex : bonjour, merci, je suis heureux..."
+                autocomplete="off"
+                autocorrect="off"
+                autocapitalize="off"
+                spellcheck="false"
+                maxlength="200"
+                aria-required="true"
+                aria-describedby="char-count form-hint"
+              />
+              <!-- Compteur de caractères pour accessibilité cognitive -->
+              <span id="char-count" class="char-count" aria-live="polite" aria-atomic="true">0/200</span>
+            </div>
+            <!-- Message d'erreur (caché par défaut) -->
+            <p id="input-error" class="field-error" role="alert" aria-live="assertive" hidden>
+              Veuillez saisir au moins un mot pour lancer la recherche.
+            </p>
+          </div>
+
+          <!-- Options de génération -->
+          <fieldset class="generation-options">
+            <legend class="options-legend">Mode de génération</legend>
+
+            <label class="radio-label">
+              <input
+                type="radio"
+                name="generation-mode"
+                value="word"
+                id="mode-word"
+                checked
+              />
+              <span class="radio-custom" aria-hidden="true"></span>
+              <span>Mot par mot</span>
+            </label>
+
+            <label class="radio-label">
+              <input
+                type="radio"
+                name="generation-mode"
+                value="sentence"
+                id="mode-sentence"
+              />
+              <span class="radio-custom" aria-hidden="true"></span>
+              <span>Phrase complète</span>
+            </label>
+          </fieldset>
+
+          <!-- Boutons d'action -->
+          <div class="form-actions">
+            <button
+              type="submit"
+              id="btn-generate"
+              class="btn btn-primary"
+              aria-describedby="form-hint"
+            >
+              <span aria-hidden="true">🤟</span>
+              Générer les signes LSF
+            </button>
+            <button
+              type="button"
+              id="btn-clear"
+              class="btn btn-secondary"
+              aria-label="Effacer le champ de saisie et les résultats"
+            >
+              Effacer
+            </button>
+          </div>
+        </form>
+      </section>
+
+      <!-- ======================================================
+           ZONE DE RÉSULTATS
+           aria-live="polite" : annonce les mises à jour sans interrompre
+      ====================================================== -->
+      <section
+        id="results-section"
+        class="results-section"
+        aria-labelledby="results-title"
+        aria-live="polite"
+        aria-atomic="false"
+        hidden
+      >
+        <h2 id="results-title" class="section-title">
+          Résultats LSF
+          <span id="results-query" class="results-query"></span>
+        </h2>
+
+        <!-- Indicateur de chargement -->
+        <div
+          id="loading-indicator"
+          class="loading-indicator"
+          role="status"
+          aria-label="Chargement des signes LSF en cours..."
+          hidden
+        >
+          <div class="spinner" aria-hidden="true"></div>
+          <p>Chargement des signes en cours…</p>
+        </div>
+
+        <!-- Message d'erreur global -->
+        <div
+          id="results-error"
+          class="results-error"
+          role="alert"
+          aria-live="assertive"
+          hidden
+        >
+          <p>Une erreur est survenue. Vérifiez votre connexion et réessayez.</p>
+        </div>
+
+        <!-- Grille de résultats -->
+        <div id="results-grid" class="results-grid" role="list" aria-label="Signes LSF générés"></div>
+
+        <!-- Message si aucun signe trouvé -->
+        <div id="no-results" class="no-results" hidden>
+          <p>Aucun signe LSF trouvé pour ce mot. Essayez un autre terme ou activez le mode "phrase complète".</p>
+        </div>
+
+      </section>
+
+    </div><!-- .container -->
+  </main>
+
+  <!-- ============================================================
+       ASIDE — Historique des recherches
+  ============================================================ -->
+  <aside class="history-panel" aria-labelledby="history-title">
+    <div class="container">
+      <div class="history-header">
+        <h2 id="history-title" class="section-title">Historique</h2>
+        <button
+          type="button"
+          id="btn-clear-history"
+          class="btn btn-ghost btn-sm"
+          aria-label="Effacer tout l'historique des recherches"
+        >
+          Tout effacer
+        </button>
+      </div>
+      <!-- Liste de l'historique, peuplée dynamiquement par JS -->
+      <ul
+        id="history-list"
+        class="history-list"
+        aria-label="Historique des recherches récentes"
+      >
+        <!-- Rempli par JS -->
+      </ul>
+      <p id="history-empty" class="history-empty" aria-live="polite">
+        Aucune recherche pour l'instant.
+      </p>
+    </div>
+  </aside>
+
+  <!-- ============================================================
+       FOOTER — Pied de page
+       role="contentinfo" : rôle implicite de <footer> mais explicité
+  ============================================================ -->
+  <footer class="site-footer" role="contentinfo">
+    <div class="container footer-inner">
+      <div class="footer-brand">
+        <span aria-hidden="true">🤟</span>
+        <strong>LSF Generator</strong>
+      </div>
+      <p class="footer-tagline">
+        Application accessible de traduction en Langue des Signes Française
+      </p>
+      <p class="footer-credit">
+        Réalisé par <strong>IntA11Y - Solutions</strong>
+        &mdash; Accessibilité numérique pour tous
+      </p>
+      <p class="footer-tech">
+        Données LSF fournies par 
+        <a href="https://www.elix-lsf.fr" target="_blank" rel="noopener noreferrer" 
+           aria-label="Elix LSF (s'ouvre dans un nouvel onglet)">
+          Elix LSF
+        </a>
+        &amp;
+        <a href="https://www.sign-lang.uni-hamburg.de/dicta-sign/portal/" 
+           target="_blank" rel="noopener noreferrer"
+           aria-label="SpreadTheSign (s'ouvre dans un nouvel onglet)">
+          SpreadTheSign
+        </a>
+      </p>
+      <p class="footer-a11y">
+        <a href="#" id="a11y-statement" aria-label="Déclaration d'accessibilité RGAA">
+          Déclaration d'accessibilité
+        </a>
+      </p>
+    </div>
+  </footer>
+
+  <!-- ============================================================
+       MODALE : Déclaration d'accessibilité
+  ============================================================ -->
+  <div
+    id="modal-a11y"
+    class="modal-overlay"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="modal-title"
+    hidden
+  >
+    <div class="modal-box">
+      <button
+        type="button"
+        id="modal-close"
+        class="modal-close"
+        aria-label="Fermer la déclaration d'accessibilité"
+      >
+        <span aria-hidden="true">&times;</span>
+      </button>
+      <h2 id="modal-title">Déclaration d'accessibilité</h2>
+      <div class="modal-content">
+        <p>Cette application vise la conformité au <strong>RGAA 4.1</strong> et aux critères <strong>WCAG 2.1 niveau AA</strong>.</p>
+        <h3>Fonctionnalités d'accessibilité intégrées</h3>
+        <ul>
+          <li>Navigation 100% clavier</li>
+          <li>Compatibilité avec les lecteurs d'écran (NVDA, JAWS, VoiceOver)</li>
+          <li>Police pour dyslexie (OpenDyslexic)</li>
+          <li>Adaptation de la taille du texte (80% à 150%)</li>
+          <li>Mode daltonien (filtre deutéranopie)</li>
+          <li>Mode noir et blanc</li>
+          <li>Mode sombre</li>
+          <li>Mode lecture simplifiée</li>
+          <li>Contrastes conformes WCAG AA</li>
+          <li>Zones ARIA live pour les mises à jour dynamiques</li>
+        </ul>
+        <p>Pour signaler un problème d'accessibilité : <a href="mailto:access@inta11y.fr">access@inta11y.fr</a></p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Zone d'annonce pour lecteurs d'écran (invisible visuellement) -->
+  <div
+    id="sr-announcer"
+    class="sr-only"
+    role="status"
+    aria-live="polite"
+    aria-atomic="true"
+  ></div>
+
+  <!-- Lien vers le script JS principal -->
+  <script src="js/app.js"></script>
+</body>
+</html>
